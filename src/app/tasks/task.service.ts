@@ -6,7 +6,6 @@ import { Task, TaskStatus } from "./task.model";
 })
 export class TaskService {
     private tasks = signal<Task[]>([]);
-
     constructor() {
         this.getTasks();
     }
@@ -25,7 +24,7 @@ export class TaskService {
     getTasks() {
         const local_task = localStorage.getItem('tasks');
         if (local_task) {
-            this.tasks.update((prev_values) => [...prev_values, JSON.parse(local_task)])
+            this.tasks.update((prev_values) => JSON.parse(local_task))
         }
     }
     saveTasks() {

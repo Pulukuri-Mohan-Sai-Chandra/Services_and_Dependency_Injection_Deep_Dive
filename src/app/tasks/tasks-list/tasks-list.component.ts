@@ -1,8 +1,8 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, Inject, inject, OnInit, signal } from '@angular/core';
 
 import { TaskItemComponent } from './task-item/task-item.component';
 import { TaskService } from '../task.service';
-import { Task } from '../task.model';
+import { Task, TaskOptions, TaskOptionsInjectionToken, TaskVaule } from '../task.model';
 
 @Component({
   selector: 'app-tasks-list',
@@ -11,10 +11,13 @@ import { Task } from '../task.model';
   styleUrl: './tasks-list.component.css',
   imports: [TaskItemComponent],
 })
-export class TasksListComponent {
+export class TasksListComponent implements OnInit {
   selectedFilter = signal<string>('all');
   private taskService = inject(TaskService)
-
+  ngOnInit(): void {
+      this.taskService.getTasks();
+  }
+  task_options = inject(TaskOptionsInjectionToken)
   tasks = computed(() => {
     switch (this.selectedFilter()) {
       case "all": return this.taskService.allTasks();
